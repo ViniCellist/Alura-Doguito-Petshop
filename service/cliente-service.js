@@ -28,8 +28,33 @@ const removeCliente = (id) => {
     })
 }
 
+const detailedClient = (id) => {
+    return fetch(`http://localhost:3000/profile/${id}`)
+    .then(answer => {
+        return answer.json();
+    });
+}
+
+const updateCliente = (id, nome, email) => {
+    return fetch(`http://localhost:3000/profile/${id}`, {
+        method: 'PUT',
+        header: {
+            'Content-type' : 'application/json'
+        },
+        body: JSON.stringify({
+            nome: nome,
+            email: email
+        })
+    })
+    .then( answer => {
+        return answer.json()
+    })
+}
+
 export const clienteService = {
     listClients,
     createClient,
-    removeCliente
+    removeCliente,
+    detailedClient,
+    updateCliente
 };
