@@ -23,20 +23,32 @@ const table = document.querySelector('[data-tabela]');
 table.addEventListener('click', async (e) => {
     let isDeleteBtn = e.target.className == 'botao-simples botao-simples--excluir';
     if (isDeleteBtn) {
-        const rowClient = e.target.closest('[data-id]');
-        let id = rowClient.dataset.id;
-        await clienteService.removeCliente(id);
-        rowClient.remove();
-        
-    };
+        try {
+            const rowClient = e.target.closest('[data-id]');
+            let id = rowClient.dataset.id;
+            await clienteService.removeCliente(id);
+            rowClient.remove();
+        }
+        catch(erro) {
+            console.log(erro)
+            window.location.href = '../telas/erro.html'
+        }
+    }
 });
 
 const render = async () => {
-    const listaClientes = await clienteService.listClients()
-
-    listaClientes.forEach(element => {
-        table.appendChild(createNewArrow(element.nome, element.email, element.id));
-    });
+    try {
+        const listaClientes = await clienteService.listClients()
+    
+        listaClientes.forEach(element => {
+            table.appendChild(createNewArrow(element.nome, element.email, element.id));
+        });
+    }
+    catch(erro) {
+        console.log(erro)
+        window.location.href = "../telas/erro.html"
+    }
+    
 };
 
 render();
