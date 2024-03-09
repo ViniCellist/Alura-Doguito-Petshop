@@ -20,21 +20,25 @@ const createNewArrow = (nome, email, id) => {
 
 const table = document.querySelector('[data-tabela]');
 
-table.addEventListener('click', (e) => {
+table.addEventListener('click', async (e) => {
     let isDeleteBtn = e.target.className == 'botao-simples botao-simples--excluir';
     if (isDeleteBtn) {
         const rowClient = e.target.closest('[data-id]');
         let id = rowClient.dataset.id;
-        clienteService.removeCliente(id)
-        .then(() => {
-            rowClient.remove()
-        });
+        await clienteService.removeCliente(id);
+        rowClient.remove();
+        
     };
 });
 
-clienteService.listClients()
-.then(data => {
-    data.forEach(element => {
+const render = async () => {
+    const listaClientes = await clienteService.listClients()
+
+    listaClientes.forEach(element => {
         table.appendChild(createNewArrow(element.nome, element.email, element.id));
     });
-});
+};
+
+render();
+
+
